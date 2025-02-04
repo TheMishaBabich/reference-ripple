@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MessageSquare, Code, Bot, Database, GitBranch, Github } from "lucide-react";
 
 const Index = () => {
@@ -87,7 +87,7 @@ const Index = () => {
           <div className="flex justify-center gap-4 mt-6">
             <Button 
               variant="outline" 
-              className="hover:bg-blue-500/10"
+              className="bg-gray-800/80 text-white border-gray-700 hover:bg-gray-700/80 hover:text-white"
               onClick={() => window.open('https://github.com/TheMishaBabich', '_blank')}
             >
               <Github className="w-4 h-4 mr-2" />
@@ -95,7 +95,7 @@ const Index = () => {
             </Button>
             <Button 
               variant="outline"
-              className="hover:bg-blue-500/10"
+              className="bg-gray-800/80 text-white border-gray-700 hover:bg-gray-700/80 hover:text-white"
               onClick={() => window.open('https://lolz.live/threads/7966273/#post-53192983', '_blank')}
             >
               <MessageSquare className="w-4 h-4 mr-2" />
@@ -107,8 +107,8 @@ const Index = () => {
         {/* Experience Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <Dialog key={index}>
-              <DialogTrigger asChild>
+            <Popover key={index}>
+              <PopoverTrigger asChild>
                 <Card 
                   className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:scale-105 transition-transform duration-300 cursor-pointer"
                   style={{ animationDelay: `${index * 100}ms` }}
@@ -123,18 +123,13 @@ const Index = () => {
                     <p className="text-gray-400">{service.description}</p>
                   </CardContent>
                 </Card>
-              </DialogTrigger>
-              <DialogContent className="bg-gray-800/95 border-gray-700 text-white">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl flex items-center gap-2">
-                    <service.icon className="w-6 h-6 text-blue-400" />
-                    {service.title}
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-400">
-                    Мои проекты в категории {service.title.toLowerCase()}
-                  </DialogDescription>
-                </DialogHeader>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 bg-gray-800/95 border-gray-700 text-white">
                 <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <service.icon className="w-5 h-5 text-blue-400" />
+                    {service.title}
+                  </h3>
                   {service.projects.map((project, idx) => (
                     <Card 
                       key={idx} 
@@ -150,8 +145,8 @@ const Index = () => {
                     </Card>
                   ))}
                 </div>
-              </DialogContent>
-            </Dialog>
+              </PopoverContent>
+            </Popover>
           ))}
         </div>
 

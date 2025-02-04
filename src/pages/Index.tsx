@@ -1,10 +1,66 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MessageSquare, Code, Bot, Database, GitBranch, Github } from "lucide-react";
+import { MessageSquare, Code, Bot, Database, GitBranch, Github, ChevronDown } from "lucide-react";
 
-const Index = () => {
+const ServiceCard = ({ service, isOpen, onToggle, index }) => {
+  return (
+    <div className="relative">
+      <Card 
+        className="bg-gray-800/50 border-gray-700 backdrop-blur-sm transition-all duration-300 cursor-pointer"
+        onClick={() => onToggle(index)}
+      >
+        <CardHeader className="w-full">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                <service.icon className="w-6 h-6 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <CardTitle className="text-white">{service.title}</CardTitle>
+                <p className="text-gray-400 text-sm mt-1">{service.description}</p>
+              </div>
+            </div>
+            <ChevronDown 
+              className={`w-5 h-5 text-gray-400 transform transition-transform duration-300 ${
+                isOpen ? 'rotate-180' : ''
+              }`} 
+            />
+          </div>
+        </CardHeader>
+      </Card>
+
+      <div 
+        className={`transform transition-all duration-300 overflow-hidden ${
+          isOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="space-y-4">
+          {service.projects.map((project, idx) => (
+            <Card 
+              key={idx} 
+              className="bg-gray-700/50 border-gray-600 hover:bg-gray-700/70 transition-colors cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(project.link, '_blank');
+              }}
+            >
+              <CardHeader>
+                <CardTitle className="text-lg text-white">{project.title}</CardTitle>
+                <p className="text-gray-300 text-sm">{project.description}</p>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function Home() {
+  const [openItem, setOpenItem] = useState(null);
+
   const services = [
     { 
       icon: Code, 
@@ -70,6 +126,10 @@ const Index = () => {
     "Aiohttp",
   ];
 
+  const toggleItem = (index) => {
+    setOpenItem(openItem === index ? null : index);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-6">
       <div className="max-w-4xl mx-auto space-y-12">
@@ -104,49 +164,16 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Experience Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Services Section with Accordion */}
+        <div className="grid grid-cols-1 gap-6">
           {services.map((service, index) => (
-            <Popover key={index}>
-              <PopoverTrigger asChild>
-                <Card 
-                  className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:scale-105 transition-transform duration-300 cursor-pointer"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
-                      <service.icon className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <CardTitle className="text-white">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-400">{service.description}</p>
-                  </CardContent>
-                </Card>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 bg-gray-800/95 border-gray-700 text-white">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <service.icon className="w-5 h-5 text-blue-400" />
-                    {service.title}
-                  </h3>
-                  {service.projects.map((project, idx) => (
-                    <Card 
-                      key={idx} 
-                      className="bg-gray-700/50 border-gray-600 hover:bg-gray-700/70 transition-colors cursor-pointer"
-                      onClick={() => window.open(project.link, '_blank')}
-                    >
-                      <CardHeader>
-                        <CardTitle className="text-lg">{project.title}</CardTitle>
-                        <CardDescription className="text-gray-300">
-                          {project.description}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
+            <ServiceCard
+              key={index}
+              service={service}
+              isOpen={openItem === index}
+              onToggle={toggleItem}
+              index={index}
+            />
           ))}
         </div>
 
@@ -212,6 +239,4 @@ const Index = () => {
       </div>
     </div>
   );
-};
-
-export default Index;
+}

@@ -1,14 +1,59 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Code, Bot, Database, GitBranch } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { MessageSquare, Code, Bot, Database, GitBranch, Github } from "lucide-react";
 
 const Index = () => {
   const services = [
-    { icon: Code, title: "Парсеры", description: "Разработка эффективных парсеров для сбора данных" },
-    { icon: GitBranch, title: "Чекеры", description: "Создание надежных чекеров для валидации данных" },
-    { icon: Database, title: "Логеры", description: "Разработка систем логирования и мониторинга" },
-    { icon: Bot, title: "Боты", description: "Создание ботов для различных платформ и задач" },
+    { 
+      icon: Code, 
+      title: "Парсеры", 
+      description: "Разработка эффективных парсеров для сбора данных",
+      projects: [
+        {
+          title: "Web Scraper Pro",
+          description: "Высокопроизводительный парсер с поддержкой прокси и многопоточности",
+          link: "https://github.com/TheMishaBabich/web-scraper-pro"
+        }
+      ]
+    },
+    { 
+      icon: GitBranch, 
+      title: "Чекеры", 
+      description: "Создание надежных чекеров для валидации данных",
+      projects: [
+        {
+          title: "Multi Checker",
+          description: "Универсальный чекер с поддержкой различных сервисов",
+          link: "https://github.com/TheMishaBabich/multi-checker"
+        }
+      ]
+    },
+    { 
+      icon: Database, 
+      title: "Логеры", 
+      description: "Разработка систем логирования и мониторинга",
+      projects: [
+        {
+          title: "Advanced Logger",
+          description: "Система логирования с веб-интерфейсом и аналитикой",
+          link: "https://github.com/TheMishaBabich/advanced-logger"
+        }
+      ]
+    },
+    { 
+      icon: Bot, 
+      title: "Боты", 
+      description: "Создание ботов для различных платформ и задач",
+      projects: [
+        {
+          title: "Telegram Bot Framework",
+          description: "Фреймворк для быстрой разработки Telegram ботов",
+          link: "https://github.com/TheMishaBabich/tg-bot-framework"
+        }
+      ]
+    },
   ];
 
   const technologies = [
@@ -39,26 +84,74 @@ const Index = () => {
           <p className="text-xl text-gray-300 animate-fade-in" style={{ animationDelay: "200ms" }}>
             Профессиональная разработка под любой запрос
           </p>
+          <div className="flex justify-center gap-4 mt-6">
+            <Button 
+              variant="outline" 
+              className="hover:bg-blue-500/10"
+              onClick={() => window.open('https://github.com/TheMishaBabich', '_blank')}
+            >
+              <Github className="w-4 h-4 mr-2" />
+              GitHub
+            </Button>
+            <Button 
+              variant="outline"
+              className="hover:bg-blue-500/10"
+              onClick={() => window.open('https://lolz.live/threads/7966273/#post-53192983', '_blank')}
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Отзывы
+            </Button>
+          </div>
         </div>
 
         {/* Experience Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <Card 
-              key={index} 
-              className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:scale-105 transition-transform duration-300"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <CardHeader>
-                <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <service.icon className="w-6 h-6 text-blue-400" />
+            <Dialog key={index}>
+              <DialogTrigger asChild>
+                <Card 
+                  className="bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:scale-105 transition-transform duration-300 cursor-pointer"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                      <service.icon className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-white">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-400">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </DialogTrigger>
+              <DialogContent className="bg-gray-800/95 border-gray-700 text-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl flex items-center gap-2">
+                    <service.icon className="w-6 h-6 text-blue-400" />
+                    {service.title}
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-400">
+                    Мои проекты в категории {service.title.toLowerCase()}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  {service.projects.map((project, idx) => (
+                    <Card 
+                      key={idx} 
+                      className="bg-gray-700/50 border-gray-600 hover:bg-gray-700/70 transition-colors cursor-pointer"
+                      onClick={() => window.open(project.link, '_blank')}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-lg">{project.title}</CardTitle>
+                        <CardDescription className="text-gray-300">
+                          {project.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  ))}
                 </div>
-                <CardTitle className="text-white">{service.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">{service.description}</p>
-              </CardContent>
-            </Card>
+              </DialogContent>
+            </Dialog>
           ))}
         </div>
 
@@ -121,20 +214,6 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Reviews Section */}
-        <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm animate-fade-in">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              📝 Отзывы
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-400">
-              Отзывы доступны на площадке Lolz.live
-            </p>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

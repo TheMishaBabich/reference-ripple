@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Code, Bot, Database, Docker, GitBranch } from "lucide-react";
+import { MessageSquare, Code, Bot, Database, GitBranch } from "lucide-react";
 
 const Index = () => {
   const services = [
